@@ -17,6 +17,7 @@
   <modules>
     <module>../sinihub-core</module>
     <module>../sinihub-swaptower</module>
+    <module>../sinihub-helianthus</module>
   </modules>
 
   <!-- 第三方jar的版本号参数变量 -->
