@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.sq</groupId>
+  <artifactId>sinihub</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>sinihub</name>
+  <url>https://github.com/shuiqing301/sinihub</url>
+
+  <!--项目中包含的模块 -->
+  <modules>
+    <module>sinihub-parent</module>
+  </modules>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>3.0</version>
+        <configuration>
+          <locales>zh_CN</locales>
+          <outputEncoding>UTF-8</outputEncoding>
+          <inputEncoding>UTF-8</inputEncoding>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <!--项目build使用的编码 -->
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <!-- repository配置，添加私有仓库和公用仓库  -->
+  <repositories>
+    <repository>
+      <id>thirdparty</id>
+      <url>http://snmis.xicp.net:8081/nexus/content/groups/public/</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>thirdparty</id>
+      <url>http://snmis.xicp.net:8081/nexus/content/repositories/thirdparty</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <!-- 开发人员信息 -->
+  <developers>
+    <developer>
+      <name>gemingming</name>
+      <email>annuus.sq@gmail.com</email>
+      <url>https://github.com/shuiqing301</url>
+      <roles>
+        <role>software engineer</role>
+      </roles>
+      <timezone>3</timezone>
+    </developer>
+  </developers>
+
+  <!--许可证 -->
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+    </license>
+  </licenses>
+</project>
