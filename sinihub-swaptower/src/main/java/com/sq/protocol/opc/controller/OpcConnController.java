@@ -35,7 +35,6 @@ public class OpcConnController {
     public String list (@ModelAttribute Page page,
                         @RequestParam Map<String, Object> parameterMap,
                         Model model) {
-        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
         return "protocal/opc/opc-client-list";
     }
 

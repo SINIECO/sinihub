@@ -146,7 +146,7 @@ public class UtgardOpcHelper {
 
         try {
             ConnectionInformation connectionInformation = new ConnectionInformation();
-            connectionInformation.setHost("localhost");
+            connectionInformation.setHost("192.168.88.131");
             connectionInformation.setUser("Administrator");
             connectionInformation.setPassword("123456");
             connectionInformation.setDomain("");

@@ -13,7 +13,7 @@ import java.util.Calendar;
  * Date: 2015/4/6
  * Time: 19:07
  * Email: shuiqing301@gmail.com
- * GitHub: https://github.com/ShuiQing301
+ * GitHub: https://github.com/shuiqing301
  * Blog: http://shuiqing301.github.io/
  * _
  * |_)._ _

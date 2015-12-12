@@ -16,6 +16,7 @@
 
   <modules>
     <module>../sinihub-core</module>
+    <module>../sinihub-protocal</module>
     <module>../sinihub-swaptower</module>
     <module>../sinihub-helianthus</module>
   </modules>
