@@ -1,6 +1,5 @@
 package com.sq.protocol.socket;
 
-import com.sq.comput.repository.LimitTempRepository;
 import com.sq.protocol.opc.component.OpcRegisterFactory;
 import com.sq.protocol.opc.service.MesuringPointService;
 import com.sq.protocol.opc.service.PushDataThirdService;

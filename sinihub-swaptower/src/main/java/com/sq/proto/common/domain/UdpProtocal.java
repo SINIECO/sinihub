@@ -1,4 +1,4 @@
-package com.sq.protocol.domain;
+package com.sq.proto.common.domain;
 
 import com.sq.entity.AbstractEntity;
 import org.hibernate.annotations.NotFound;

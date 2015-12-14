@@ -1,14 +1,8 @@
 package junit.comput;
 
-import com.sq.comput.service.IndiComputService;
-import com.sq.comput.service.IndicatorTempService;
 import com.sq.protocol.socket.UdpSocketConfig;
-import com.sq.util.DateUtil;
 import junit.base.TestCase;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Calendar;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,31 +19,7 @@ import java.util.Calendar;
 public class IndiComputTest extends TestCase {
 
     @Autowired
-    private IndiComputService indiComputService;
-
-    @Autowired
-    private IndicatorTempService indicatorTempService;
-
-    @Autowired
     private UdpSocketConfig udpSocketConfig;
-
-   /* @Test
-    public void testInterfaceDataGather () {
-        Calendar cal = Calendar.getInstance();
-        System.out.println("uuuuuuuuuuuuu" + DateUtil.formatCalendar(cal, DateUtil.DATE_FORMAT_Y_M_D));
-        this.indiComputService.interfaceDataGather(cal);
-    }*/
-/*
-    @Test
-    public void testInterfaceReComput () {
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.DAY_OF_MONTH, 2);
-        cal.set(Calendar.HOUR_OF_DAY,0);
-        cal.set(Calendar.MINUTE, 0);
-        List<IndicatorTemp> indicatorTempList = new ArrayList<IndicatorTemp>();
-        indicatorTempList.add(indicatorTempService.findOne(1l));
-        this.indiComputService.reComputInterface(cal,cal,indicatorTempList);
-    }*/
 
     /*@Test
 

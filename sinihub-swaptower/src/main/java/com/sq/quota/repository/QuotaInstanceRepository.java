@@ -1,6 +1,5 @@
 package com.sq.quota.repository;
 
-import com.sq.comput.domain.IndicatorInstance;
 import com.sq.quota.domain.QuotaInstance;
 import com.sq.repository.BaseRepository;
 import org.slf4j.Logger;

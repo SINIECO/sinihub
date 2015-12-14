@@ -8,7 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>sinihub-helianthus</artifactId>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
     <name>sinihub-helianthus</name>
     <url>http://maven.apache.org</url>

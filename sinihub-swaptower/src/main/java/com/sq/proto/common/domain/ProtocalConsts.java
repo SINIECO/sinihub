@@ -1,4 +1,4 @@
-package com.sq.protocol.domain;
+package com.sq.proto.common.domain;
 
 /**
  * 通讯相关的常量

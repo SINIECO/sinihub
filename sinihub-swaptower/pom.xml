@@ -77,6 +77,11 @@
             <version>${sinihub.core.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.sq</groupId>
+            <artifactId>sinihub-protocal</artifactId>
+            <version>${sinihub.protocal.version}</version>
+        </dependency>
+        <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql.version}</version>
@@ -104,6 +109,7 @@
 
     <properties>
         <sinihub.core.version>1.0-SNAPSHOT</sinihub.core.version>
+        <sinihub.protocal.version>1.0-SNAPSHOT</sinihub.protocal.version>
         <java.version>1.7</java.version>
         <jetty.version>8.1.8.v20121106</jetty.version>
         <mysql.version>5.1.9</mysql.version>

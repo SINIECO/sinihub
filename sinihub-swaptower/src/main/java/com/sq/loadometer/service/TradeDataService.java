@@ -1,10 +1,5 @@
 package com.sq.loadometer.service;
 
-import com.sq.comput.domain.IndicatorConsts;
-import com.sq.comput.domain.IndicatorInstance;
-import com.sq.comput.domain.IndicatorTemp;
-import com.sq.comput.repository.IndicatorInstanceRepository;
-import com.sq.comput.repository.IndicatorTempRepository;
 import com.sq.entity.search.MatchType;
 import com.sq.entity.search.Searchable;
 import com.sq.inject.annotation.BaseComponent;
@@ -13,6 +8,11 @@ import com.sq.loadometer.component.JdbcHelper;
 import com.sq.loadometer.domain.LoadometerIndicatorDto;
 import com.sq.loadometer.domain.Trade;
 import com.sq.loadometer.repository.TradeDataRepository;
+import com.sq.quota.domain.QuotaConsts;
+import com.sq.quota.domain.QuotaInstance;
+import com.sq.quota.domain.QuotaTemp;
+import com.sq.quota.repository.QuotaInstanceRepository;
+import com.sq.quota.repository.QuotaTempRepository;
 import com.sq.service.BaseService;
 import com.sq.util.DateUtil;
 import org.slf4j.Logger;
@@ -50,10 +50,10 @@ public class TradeDataService extends BaseService<Trade, Long> {
     private TradeDataRepository tradeDataRepository;
 
     @Autowired
-    private IndicatorTempRepository indicatorTempRepository;
+    private QuotaTempRepository indicatorTempRepository;
 
     @Autowired
-    private IndicatorInstanceRepository indicatorInstanceRepository;
+    private QuotaInstanceRepository indicatorInstanceRepository;
 
     /**
      * 地磅流水数据同步
@@ -126,7 +126,7 @@ public class TradeDataService extends BaseService<Trade, Long> {
      */
     @Transactional(propagation = Propagation.REQUIRED)
     public void generateLoadometerIndicator (String generateDate) {
-        List<IndicatorInstance> indicatorInstanceList = new ArrayList<IndicatorInstance>();
+        List<QuotaInstance> indicatorInstanceList = new ArrayList<QuotaInstance>();
 
         //查询地磅指标数据
         List<LoadometerIndicatorDto> loadometerIndicatorDtoList = tradeDataRepository.queryForLoadometerIndicator(generateDate);
@@ -145,13 +145,13 @@ public class TradeDataService extends BaseService<Trade, Long> {
 
         //保存查询到的当日地磅指标数据
         for(LoadometerIndicatorDto loadometerIndicatorDto:loadometerIndicatorDtoList) {
-            IndicatorTemp indicatorTemp = indicatorTempRepository.findByIndicatorCode(loadometerIndicatorDto.getIndicatorCode());
-            IndicatorInstance indicatorInstance = new IndicatorInstance(indicatorTemp);
+            QuotaTemp indicatorTemp = indicatorTempRepository.findByIndicatorCode(loadometerIndicatorDto.getIndicatorCode());
+            QuotaInstance indicatorInstance = new QuotaInstance(indicatorTemp);
             try {
                 indicatorInstance.setFloatValue(Double.parseDouble(loadometerIndicatorDto.getTotalAmount()));
-                indicatorInstance.setValueType(IndicatorConsts.VALUE_TYPE_DOUBLE);
+                indicatorInstance.setValueType(QuotaConsts.VALUE_TYPE_DOUBLE);
                 indicatorInstance.setStatDateNum(Integer.parseInt(generateDate));
-                indicatorInstance.setInstanceTime(DateUtil.stringToCalendar(generateDate,DateUtil.DATE_FORMAT_DAFAULT));
+                indicatorInstance.setInstanceTime(DateUtil.stringToDate(generateDate,DateUtil.DATE_FORMAT_DAFAULT));
             } catch (ParseException e) {
                 log.error("stringToCalendar error:", e);
             }
