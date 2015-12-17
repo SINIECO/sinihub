@@ -1,7 +1,8 @@
-package com.sq.proto.common.repository;
+package com.sq.proto.jdbc.repository;
 
-import com.sq.proto.common.domain.JdbcProtocal;
+import com.sq.proto.jdbc.domain.JdbcProtocal;
 import com.sq.repository.BaseRepository;
+import org.springframework.data.jpa.repository.Query;
 
 /**
  * JDBC通信仓库
@@ -16,4 +17,8 @@ import com.sq.repository.BaseRepository;
  * | o| (_
  */
 public interface JdbcProtocalRepository extends BaseRepository<JdbcProtocal, Long> {
+
+    /** 根据系统编码查找opc通讯配置记录 */
+    @Query("select m from JdbcProtocal m where sysCode = ?1 ")
+    JdbcProtocal findJdbcProtocalBySysCode(String sysCode);
 }

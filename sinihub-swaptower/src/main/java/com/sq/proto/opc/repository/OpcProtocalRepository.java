@@ -1,7 +1,8 @@
-package com.sq.proto.common.repository;
+package com.sq.proto.opc.repository;
 
-import com.sq.proto.common.domain.OpcProtocal;
+import com.sq.proto.opc.domain.OpcProtocal;
 import com.sq.repository.BaseRepository;
+import org.springframework.data.jpa.repository.Query;
 
 /**
  * opc通信仓库
@@ -16,4 +17,8 @@ import com.sq.repository.BaseRepository;
  * | o| (_
  */
 public interface OpcProtocalRepository extends BaseRepository<OpcProtocal, Long> {
+
+    /** 根据系统编码查找opc通讯配置记录 */
+    @Query("select m from OpcProtocal m where sysCode = ?1 ")
+    OpcProtocal findOpcProtocalBySysCode(String sysCode);
 }

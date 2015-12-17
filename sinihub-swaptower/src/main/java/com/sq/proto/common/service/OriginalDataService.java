@@ -1,8 +1,8 @@
-package com.sq.proto.opc.service;
+package com.sq.proto.common.service;
 
 import com.sq.inject.annotation.BaseComponent;
-import com.sq.proto.opc.domain.OriginalData;
-import com.sq.proto.opc.repository.OriginalDataRepository;
+import com.sq.proto.common.domain.OriginalData;
+import com.sq.proto.common.repository.OriginalDataRepository;
 import com.sq.service.BaseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

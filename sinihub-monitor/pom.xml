@@ -9,10 +9,10 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>sinihub-swaptower</artifactId>
+    <artifactId>sinihub-monitor</artifactId>
     <packaging>war</packaging>
-    <name>sinihub-swaptower</name>
-    <url>https://github.com/shuiqing301/sinihub/swaptower</url>
+    <name>sinihub-monitor</name>
+    <url>https://github.com/shuiqing301/sinihub/monitor</url>
 
     <build>
         <finalName>${project.artifactId}</finalName>

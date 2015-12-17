@@ -1,4 +1,4 @@
-package com.sq.proto.opc.domain;
+package com.sq.proto.common.domain;
 
 import com.sq.entity.AbstractEntity;
 import com.sq.protocol.opc.domain.MeaType;

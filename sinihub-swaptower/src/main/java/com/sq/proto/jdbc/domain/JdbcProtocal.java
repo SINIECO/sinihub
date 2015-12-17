@@ -1,4 +1,4 @@
-package com.sq.proto.common.domain;
+package com.sq.proto.jdbc.domain;
 
 import com.sq.entity.AbstractEntity;
 import org.hibernate.annotations.NotFound;
@@ -25,13 +25,6 @@ public class JdbcProtocal extends AbstractEntity<Long> {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-
-    /** 关联的接入系统对象 */
-    @OneToOne(cascade= CascadeType.REFRESH, fetch=FetchType.EAGER)
-    @JoinColumn(name="sysId")
-    @org.hibernate.annotations.ForeignKey(name="fk_jp_sysId")
-    @NotFound(action= NotFoundAction.IGNORE)
-    private AccessSystem accessSystem;
 
     /** 接入系统编码 */
     private String sysCode;
@@ -71,14 +64,6 @@ public class JdbcProtocal extends AbstractEntity<Long> {
     @Override
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public AccessSystem getAccessSystem() {
-        return accessSystem;
-    }
-
-    public void setAccessSystem(AccessSystem accessSystem) {
-        this.accessSystem = accessSystem;
     }
 
     public String getSysCode() {

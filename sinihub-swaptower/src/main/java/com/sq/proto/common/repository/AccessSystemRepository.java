@@ -2,6 +2,7 @@ package com.sq.proto.common.repository;
 
 import com.sq.proto.common.domain.AccessSystem;
 import com.sq.repository.BaseRepository;
+import org.springframework.data.jpa.repository.Query;
 
 /**
  * 接入系统仓库
@@ -16,4 +17,8 @@ import com.sq.repository.BaseRepository;
  * | o| (_
  */
 public interface AccessSystemRepository extends BaseRepository<AccessSystem, Long> {
+
+    /** 根据系统编码查找AccessSystem子系统基本信息配置记录 */
+    @Query("select m from AccessSystem m where sysCode = ?1 ")
+    AccessSystem findAccessSystemBySysCode(String sysCode);
 }

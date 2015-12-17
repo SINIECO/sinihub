@@ -16,7 +16,7 @@
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 按天回滚 daily -->
             <!-- log.dir 在maven profile里配置 -->
-            <fileNamePattern>${log.dir}/sinihub-swaptower-error-%d{yyyyMMdd}.log</fileNamePattern>
+            <fileNamePattern>${log.dir}/sinihub-monitor-error-%d{yyyyMMdd}.log</fileNamePattern>
             <!-- 日志最大的历史 60天 -->
             <maxHistory>60</maxHistory>
         </rollingPolicy>
@@ -29,7 +29,7 @@
     <appender name="quotaAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 按天回滚 daily -->
-            <fileNamePattern>${log.dir}/sinihub-swaptower-quota-%d{yyyyMMdd}.log</fileNamePattern>
+            <fileNamePattern>${log.dir}/sinihub-monitor-quota-%d{yyyyMMdd}.log</fileNamePattern>
             <!-- 日志最大的历史 60天 -->
             <maxHistory>60</maxHistory>
         </rollingPolicy>
@@ -49,15 +49,10 @@
     <root level="ERROR">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="ERROR" />
-        <appender-ref ref="quotaAppender" />
     </root>
 
     <!--错误日志-->
-    <logger name="sinihub-swaptower-error" additivity="false" level="ERROR">
+    <logger name="uip-error" additivity="false" level="ERROR">
         <appender-ref ref="ERROR"/>
-    </logger>
-
-    <logger name="com.sq.quota" additivity="true" level="ERROR">
-        <appender-ref ref="quotaAppender"/>
     </logger>
 </configuration>

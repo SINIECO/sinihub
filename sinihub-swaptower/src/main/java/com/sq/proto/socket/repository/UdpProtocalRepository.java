@@ -1,8 +1,8 @@
-package com.sq.proto.common.repository;
+package com.sq.proto.socket.repository;
 
-import com.sq.proto.common.domain.OpcProtocal;
-import com.sq.proto.common.domain.UdpProtocal;
+import com.sq.proto.socket.domain.UdpProtocal;
 import com.sq.repository.BaseRepository;
+import org.springframework.data.jpa.repository.Query;
 
 /**
  * UDP通信仓库
@@ -17,4 +17,8 @@ import com.sq.repository.BaseRepository;
  * | o| (_
  */
 public interface UdpProtocalRepository extends BaseRepository<UdpProtocal, Long> {
+
+    /** 根据系统编码查找opc通讯配置记录 */
+    @Query("select m from UdpProtocal m where sysCode = ?1 ")
+    UdpProtocal findUdpProtocalBySysCode(String sysCode);
 }

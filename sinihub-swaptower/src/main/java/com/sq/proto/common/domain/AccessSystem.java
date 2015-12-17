@@ -38,6 +38,12 @@ public class AccessSystem extends AbstractEntity<Long> {
     /** 该子系统所使用的通讯协议 */
     private int protocalType;
 
+    /** cron表达式 */
+    private String cronExp;
+
+    /** 是否同步 */
+    private boolean isSync;
+
     @Override
     public Long getId() {
         return id;
@@ -78,5 +84,21 @@ public class AccessSystem extends AbstractEntity<Long> {
 
     public void setProtocalType(int protocalType) {
         this.protocalType = protocalType;
+    }
+
+    public String getCronExp() {
+        return cronExp;
+    }
+
+    public void setCronExp(String cronExp) {
+        this.cronExp = cronExp;
+    }
+
+    public boolean isSync() {
+        return isSync;
+    }
+
+    public void setIsSync(boolean isSync) {
+        this.isSync = isSync;
     }
 }

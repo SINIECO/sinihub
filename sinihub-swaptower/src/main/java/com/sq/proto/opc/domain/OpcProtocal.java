@@ -1,10 +1,10 @@
-package com.sq.proto.common.domain;
+package com.sq.proto.opc.domain;
 
 import com.sq.entity.AbstractEntity;
-import org.hibernate.annotations.*;
 
-import javax.persistence.*;
-import javax.persistence.CascadeType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 /**
  * opc通讯协议
@@ -25,13 +25,6 @@ public class OpcProtocal extends AbstractEntity<Long> {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-
-    /** 关联的接入系统对象 */
-    @OneToOne(cascade= CascadeType.REFRESH, fetch=FetchType.EAGER)
-    @JoinColumn(name="sysId")
-    @org.hibernate.annotations.ForeignKey(name="fk_op_sysId")
-    @NotFound(action= NotFoundAction.IGNORE)
-    private AccessSystem accessSystem;
 
     /** 接入系统编码 */
     private String sysCode;
@@ -65,14 +58,6 @@ public class OpcProtocal extends AbstractEntity<Long> {
     @Override
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public AccessSystem getAccessSystem() {
-        return accessSystem;
-    }
-
-    public void setAccessSystem(AccessSystem accessSystem) {
-        this.accessSystem = accessSystem;
     }
 
     public String getSysCode() {

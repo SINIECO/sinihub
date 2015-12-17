@@ -1,6 +1,6 @@
-package com.sq.proto.opc.repository;
+package com.sq.proto.common.repository;
 
-import com.sq.proto.opc.domain.OriginalData;
+import com.sq.proto.common.domain.OriginalData;
 import com.sq.repository.BaseRepository;
 import org.springframework.data.jpa.repository.Query;
 

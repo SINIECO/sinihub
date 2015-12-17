@@ -1,6 +1,6 @@
-package com.sq.proto.opc.repository;
+package com.sq.proto.common.repository;
 
-import com.sq.proto.opc.domain.OriginalData;
+import com.sq.proto.common.domain.OriginalData;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
