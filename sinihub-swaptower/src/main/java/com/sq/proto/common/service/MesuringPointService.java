@@ -3,6 +3,7 @@ package com.sq.proto.common.service;
 import com.sq.OriginalItem;
 import com.sq.inject.annotation.BaseComponent;
 import com.sq.proto.common.domain.AccessSystem;
+import com.sq.proto.common.domain.OriginalData;
 import com.sq.proto.common.domain.ProtocalConsts;
 import com.sq.proto.common.domain.MesuringPoint;
 import com.sq.proto.common.repository.MesuringPointRepository;
@@ -15,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -52,20 +55,39 @@ public class MesuringPointService extends BaseService<MesuringPoint, Long> {
      * @param sysCode 子系统编码
      * @return 同步的结果集
      */
-    public List<OriginalItem> syncRemoteSystemData (String sysCode) {
+    public void syncRemoteSystemData (String sysCode) {
         AccessSystem accessSystem = accessSystemService.fetchAccessSystemConfig(sysCode);
         if (null == accessSystem) {
             log.error("syncRemoteSystemData accessSystem si null ---- sysCode ->>" + sysCode);
-            return null;
+            return;
         }
 
         List<OriginalItem> originalItemList = new ArrayList<OriginalItem>();
         switch (accessSystem.getProtocalType()) {
             case ProtocalConsts.PROTOCAL_TYPE_OPC:
                 originalItemList = opcProtocalService.listOrignalItemByOpcProtocal(sysCode);
+                break;
         }
 
-        return originalItemList;
+        receiveDataInMysql(sysCode, originalItemList);
+    }
+
+    /**
+     * 接收通信传过来的数据并保存到mysql服务中
+     * @param sysCode  系统编码
+     * @param originalItemList 通信原始数据集合
+     */
+    public void receiveDataInMysql (String sysCode, List<OriginalItem> originalItemList) {
+        List<OriginalData> originalDataList = new LinkedList<OriginalData>();
+        for (OriginalItem originalItem:originalItemList) {
+            OriginalData originalData = new OriginalData();
+            originalData.setInstanceTime(Calendar.getInstance());
+            originalData.setItemCode(originalItem.getItemCode());
+            originalData.setItemValue(originalItem.getItemValue());
+            originalData.setSysCode(sysCode);
+            originalDataList.add(originalData);
+        }
+        originalDataRepository.save(originalDataList);
     }
 
 }
