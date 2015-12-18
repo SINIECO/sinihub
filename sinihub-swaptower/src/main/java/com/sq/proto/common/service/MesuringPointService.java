@@ -55,7 +55,6 @@ public class MesuringPointService extends BaseService<MesuringPoint, Long> {
     @Autowired
     private UdpProtocalService udpProtocalService;
 
-
     /**
      * 同步子系统的数据
      * @param sysCode 子系统编码

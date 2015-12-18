@@ -8,6 +8,7 @@ import com.sq.service.BaseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * UDP通信服务类
@@ -21,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * |_)._ _
  * | o| (_
  */
+@Service
 public class UdpProtocalService extends BaseService<UdpProtocal, Long> {
 
     private static final Logger log = LoggerFactory.getLogger(UdpProtocalService.class);
