@@ -1,6 +1,7 @@
 package com.sq.proto.socket.service;
 
 import com.sq.inject.annotation.BaseComponent;
+import com.sq.proto.socket.component.UdpReceiverThread;
 import com.sq.proto.socket.domain.UdpProtocal;
 import com.sq.proto.socket.repository.UdpProtocalRepository;
 import com.sq.service.BaseService;
@@ -27,4 +28,20 @@ public class UdpProtocalService extends BaseService<UdpProtocal, Long> {
     @BaseComponent
     @Autowired
     private UdpProtocalRepository udpProtocalRepository;
+
+    /**
+     * 开启UDP数据接收服务
+     * @param sysCode 子系统编码
+     */
+    public void startUdpDataReceiveService(String sysCode) {
+        UdpProtocal udpProtocal = udpProtocalRepository.findUdpProtocalBySysCode(sysCode);
+        if (null == udpProtocal) {
+            log.error("startUdpDataReceiveService udpProtocal is null. sysCode ->>> " + sysCode);
+            return;
+        }
+
+        UdpReceiverThread udpReceiverThread = new UdpReceiverThread();
+        udpReceiverThread.setUdpProtocal(udpProtocal);
+        udpReceiverThread.start();
+    }
 }

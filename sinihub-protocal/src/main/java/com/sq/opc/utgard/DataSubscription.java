@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -131,6 +132,7 @@ public class DataSubscription {
                 String itemValue = entry.getValue().getValue().toString();
                 String itemCode = entry.getKey().getId();
                 try {
+
                     log.error("key= " + entry.getKey().getId()
                             + " and value= " + entry.getValue().getValue().toString()
                             + " and type= " + entry.getValue().getValue().getType());
@@ -161,6 +163,7 @@ public class DataSubscription {
                 OriginalItem originalItem = new OriginalItem();
                 originalItem.setItemCode(itemCode);
                 originalItem.setItemValue(itemValue);
+                originalItem.setInstanceTime(entry.getValue().getTimestamp());
                 originalItemList.add(originalItem);
             }
         } catch (JIException e) {

@@ -5,8 +5,11 @@ import com.sq.OriginalItem;
 import com.sq.inject.annotation.BaseComponent;
 import com.sq.opc.utgard.DataSubscription;
 import com.sq.opc.utgard.UtgardOpcServer;
+import com.sq.proto.common.component.RtDataCache;
 import com.sq.proto.common.domain.MesuringPoint;
+import com.sq.proto.common.domain.OriginalData;
 import com.sq.proto.common.repository.MesuringPointRepository;
+import com.sq.proto.common.repository.OriginalDataRepository;
 import com.sq.proto.common.service.AccessSystemService;
 import com.sq.proto.opc.component.OpcSubscriptionHolder;
 import com.sq.proto.opc.domain.OpcProtocal;
@@ -18,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -45,10 +49,16 @@ public class OpcProtocalService extends BaseService<OpcProtocal, Long> {
     private MesuringPointRepository mesuringPointRepository;
 
     @Autowired
+    private OriginalDataRepository originalDataRepository;
+
+    @Autowired
     private OpcSubscriptionHolder opcSubscriptionHolder;
 
     @Autowired
     private AccessSystemService accessSystemService;
+
+    @Autowired
+    private RtDataCache rtDataCache;
 
     public List<OriginalItem> listOrignalItemByOpcProtocal(String sysCode) {
         List<OriginalItem> originalItemList = new ArrayList<OriginalItem>();
@@ -88,5 +98,33 @@ public class OpcProtocalService extends BaseService<OpcProtocal, Long> {
         }
 
         return dataSubscription.syncAccessItem();
+    }
+
+    /**
+     * 接收通信传过来的数据并保存到mysql服务中
+     * @param sysCode  系统编码
+     * @param originalItemList 通信原始数据集合
+     */
+    public void receiveDataInMysql (String sysCode, List<OriginalItem> originalItemList) {
+        List<OriginalData> originalDataList = new LinkedList<OriginalData>();
+        for (OriginalItem originalItem:originalItemList) {
+            OriginalData originalData = new OriginalData();
+            originalData.setInstanceTime(originalItem.getInstanceTime());
+            originalData.setItemCode(originalItem.getItemCode());
+            originalData.setItemValue(originalItem.getItemValue());
+            originalData.setSysCode(sysCode);
+            originalDataList.add(originalData);
+        }
+        originalDataRepository.save(originalDataList);
+    }
+
+    /**
+     * 更新通信原始数据缓存
+     * @param originalItemList 通信传过来的原始数据
+     */
+    public void updateOrignalItemDataCache(List<OriginalItem> originalItemList) {
+        for (OriginalItem originalItem:originalItemList) {
+            rtDataCache.originalItemMap.put(originalItem.getItemCode(),originalItem.getItemValue());
+        }
     }
 }

@@ -2,9 +2,7 @@ package com.sq.proto.opc.domain;
 
 import com.sq.entity.AbstractEntity;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * opc通讯协议
@@ -18,6 +16,8 @@ import javax.persistence.Id;
  * |_)._ _
  * | o| (_
  */
+@Entity
+@Table(name = "t_OpcProtocal")
 public class OpcProtocal extends AbstractEntity<Long> {
 
     private static final long serialVersionUID = -3259152133351215055L;

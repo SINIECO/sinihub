@@ -1,6 +1,7 @@
 package com.sq;
 
 import java.io.Serializable;
+import java.util.Calendar;
 
 /**
  * opc通讯获取的点数据
@@ -23,7 +24,17 @@ public class OriginalItem implements Serializable {
 
     private String itemValue;
 
+    private Calendar instanceTime;
+
     private int valueType;
+
+    public Calendar getInstanceTime() {
+        return instanceTime;
+    }
+
+    public void setInstanceTime(Calendar instanceTime) {
+        this.instanceTime = instanceTime;
+    }
 
     public String getItemCode() {
         return itemCode;

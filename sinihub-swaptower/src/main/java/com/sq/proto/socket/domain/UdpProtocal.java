@@ -18,6 +18,8 @@ import javax.persistence.*;
  * |_)._ _
  * | o| (_
  */
+@Entity
+@Table(name = "t_UdpProtocal")
 public class UdpProtocal extends AbstractEntity<Long> {
 
     private static final long serialVersionUID = -5097907113575595489L;
@@ -34,6 +36,12 @@ public class UdpProtocal extends AbstractEntity<Long> {
 
     /** 端口号 */
     private String port;
+
+    /** 数据更新速度 */
+    private int udpUpdateRate;
+
+    /** 数据同步速度 */
+    private int syncRate;
 
     @Override
     public Long getId() {
@@ -67,5 +75,21 @@ public class UdpProtocal extends AbstractEntity<Long> {
 
     public void setPort(String port) {
         this.port = port;
+    }
+
+    public int getSyncRate() {
+        return syncRate;
+    }
+
+    public void setSyncRate(int syncRate) {
+        this.syncRate = syncRate;
+    }
+
+    public int getUdpUpdateRate() {
+        return udpUpdateRate;
+    }
+
+    public void setUdpUpdateRate(int udpUpdateRate) {
+        this.udpUpdateRate = udpUpdateRate;
     }
 }

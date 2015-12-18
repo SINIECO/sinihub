@@ -2,6 +2,7 @@ package com.sq.proto.common.service;
 
 import com.sq.OriginalItem;
 import com.sq.inject.annotation.BaseComponent;
+import com.sq.proto.common.component.RtDataCache;
 import com.sq.proto.common.domain.AccessSystem;
 import com.sq.proto.common.domain.OriginalData;
 import com.sq.proto.common.domain.ProtocalConsts;
@@ -9,6 +10,7 @@ import com.sq.proto.common.domain.MesuringPoint;
 import com.sq.proto.common.repository.MesuringPointRepository;
 import com.sq.proto.common.repository.OriginalDataRepository;
 import com.sq.proto.opc.service.OpcProtocalService;
+import com.sq.proto.socket.service.UdpProtocalService;
 import com.sq.service.BaseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +52,10 @@ public class MesuringPointService extends BaseService<MesuringPoint, Long> {
     @Autowired
     private OpcProtocalService opcProtocalService;
 
+    @Autowired
+    private UdpProtocalService udpProtocalService;
+
+
     /**
      * 同步子系统的数据
      * @param sysCode 子系统编码
@@ -62,32 +68,20 @@ public class MesuringPointService extends BaseService<MesuringPoint, Long> {
             return;
         }
 
-        List<OriginalItem> originalItemList = new ArrayList<OriginalItem>();
         switch (accessSystem.getProtocalType()) {
             case ProtocalConsts.PROTOCAL_TYPE_OPC:
-                originalItemList = opcProtocalService.listOrignalItemByOpcProtocal(sysCode);
+                List<OriginalItem> originalItemList = opcProtocalService.listOrignalItemByOpcProtocal(sysCode);
+
+                /** 缓存通信的实时数据 */
+                opcProtocalService.updateOrignalItemDataCache(originalItemList);
+
+                /** 将通信接收的数据存入数据库 */
+                opcProtocalService.receiveDataInMysql(sysCode, originalItemList);
+                break;
+            case ProtocalConsts.PROTOCAL_TYPE_UDP:
+                udpProtocalService.startUdpDataReceiveService(sysCode);
                 break;
         }
-
-        receiveDataInMysql(sysCode, originalItemList);
-    }
-
-    /**
-     * 接收通信传过来的数据并保存到mysql服务中
-     * @param sysCode  系统编码
-     * @param originalItemList 通信原始数据集合
-     */
-    public void receiveDataInMysql (String sysCode, List<OriginalItem> originalItemList) {
-        List<OriginalData> originalDataList = new LinkedList<OriginalData>();
-        for (OriginalItem originalItem:originalItemList) {
-            OriginalData originalData = new OriginalData();
-            originalData.setInstanceTime(Calendar.getInstance());
-            originalData.setItemCode(originalItem.getItemCode());
-            originalData.setItemValue(originalItem.getItemValue());
-            originalData.setSysCode(sysCode);
-            originalDataList.add(originalData);
-        }
-        originalDataRepository.save(originalDataList);
     }
 
 }

@@ -18,6 +18,8 @@ import javax.persistence.*;
  * |_)._ _
  * | o| (_
  */
+@Entity
+@Table(name = "t_JdbcProtocal")
 public class JdbcProtocal extends AbstractEntity<Long> {
 
     private static final long serialVersionUID = 8158795029755892808L;
