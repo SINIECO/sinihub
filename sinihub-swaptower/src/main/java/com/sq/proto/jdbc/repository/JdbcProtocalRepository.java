@@ -1,8 +1,12 @@
 package com.sq.proto.jdbc.repository;
 
+import com.sq.loadometer.domain.LoadometerIndicatorDto;
+import com.sq.loadometer.domain.Trade;
 import com.sq.proto.jdbc.domain.JdbcProtocal;
 import com.sq.repository.BaseRepository;
 import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 
 /**
  * JDBC通信仓库

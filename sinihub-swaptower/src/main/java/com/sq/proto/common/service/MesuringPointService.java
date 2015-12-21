@@ -9,6 +9,7 @@ import com.sq.proto.common.domain.ProtocalConsts;
 import com.sq.proto.common.domain.MesuringPoint;
 import com.sq.proto.common.repository.MesuringPointRepository;
 import com.sq.proto.common.repository.OriginalDataRepository;
+import com.sq.proto.jdbc.service.JdbcProtocalService;
 import com.sq.proto.opc.service.OpcProtocalService;
 import com.sq.proto.socket.service.UdpProtocalService;
 import com.sq.service.BaseService;
@@ -55,6 +56,9 @@ public class MesuringPointService extends BaseService<MesuringPoint, Long> {
     @Autowired
     private UdpProtocalService udpProtocalService;
 
+    @Autowired
+    private JdbcProtocalService jdbcProtocalService;
+
     /**
      * 同步子系统的数据
      * @param sysCode 子系统编码
@@ -80,6 +84,8 @@ public class MesuringPointService extends BaseService<MesuringPoint, Long> {
             case ProtocalConsts.PROTOCAL_TYPE_UDP:
                 udpProtocalService.startUdpDataReceiveService(sysCode);
                 break;
+            case ProtocalConsts.PROTOCAL_TYPE_JDBC:
+                jdbcProtocalService.syncTradeRealTimeData(sysCode);
         }
     }
 

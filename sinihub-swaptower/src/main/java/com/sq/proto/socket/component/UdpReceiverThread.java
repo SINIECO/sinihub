@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Calendar;
 import java.util.LinkedList;
@@ -63,37 +62,27 @@ public class UdpReceiverThread extends Thread{
         try {
             //客户端在端口监听接收到的数据
             DatagramSocket ds = new DatagramSocket(Integer.parseInt(udpProtocal.getPort()));
-            InetAddress loc = InetAddress.getLocalHost();
 
             //定义用来接收数据的DatagramPacket实例
             DatagramPacket dp_receive = new DatagramPacket(buf, DATA_LENGTH);
             //数据发向本地端口
             ds.setSoTimeout(TIMEOUT);     //设置接收数据时阻塞的最长时间
 
-            int i = 1;
-            while(connFlag){
+            //接收从服务端发送回来的数据
+            ds.receive(dp_receive);
 
-                Thread.sleep(udpProtocal.getUdpUpdateRate()*1000l);  //udp通信频率
+            log.debug("dp_receive:" + new String(dp_receive.getData(), 0, dp_receive.getLength()));
+            updateOrignalDataCache(new String(dp_receive.getData(), 0, dp_receive.getLength()));   //更新实时数据的缓存
 
-                //接收从服务端发送回来的数据
-                ds.receive(dp_receive);
+            saveReceiveUdpData(new String(dp_receive.getData(), 0, dp_receive.getLength()));
 
-                log.debug("dp_receive:" + new String(dp_receive.getData(), 0, dp_receive.getLength()));
-                updateOrignalDataCache(new String(dp_receive.getData(), 0, dp_receive.getLength()));   //更新实时数据的缓存
-
-                if (i % udpProtocal.getSyncRate() == 0) {
-                    saveReceiveUdpData(new String(dp_receive.getData(), 0, dp_receive.getLength()));
-                }
-                i++;
-
-                //如果收到数据，则打印出来
-                String str_receive = new String(dp_receive.getData(),0,dp_receive.getLength()) +
-                        " from " + dp_receive.getAddress().getHostAddress() + ":" + dp_receive.getPort();
-                log.debug(str_receive);
-                //由于dp_receive在接收了数据之后，其内部消息长度值会变为实际接收的消息的字节数，
-                //所以这里要将dp_receive的内部消息长度重新置为1024
-                dp_receive.setLength(DATA_LENGTH);
-            }
+            //如果收到数据，则打印出来
+            String str_receive = new String(dp_receive.getData(),0,dp_receive.getLength()) +
+                    " from " + dp_receive.getAddress().getHostAddress() + ":" + dp_receive.getPort();
+            log.debug(str_receive);
+            //由于dp_receive在接收了数据之后，其内部消息长度值会变为实际接收的消息的字节数，
+            //所以这里要将dp_receive的内部消息长度重新置为1024
+            dp_receive.setLength(DATA_LENGTH);
             ds.close();
         } catch (UnknownHostException e) {
             log.error("IP地址错误.", e);
@@ -101,8 +90,6 @@ public class UdpReceiverThread extends Thread{
             log.error("获取监听端口的数据失败.",e);
         } catch (IOException e) {
             log.error("数据通讯异常.", e);
-        } catch (InterruptedException e) {
-            log.error("UDP接收数据线程中断.", e);
         }
     }
 

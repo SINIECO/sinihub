@@ -41,19 +41,6 @@ public interface ProtocalConsts {
 
     public static final int OPC_DRIVER_JEASYOPC = 2;
 
-    /** ======================
-     *    JDBC通讯协驱动类型
-     *      1、sql server
-     *      2、mysql
-     *      3、access
-     *      4、oracle
-     */
-    public static final int JDBC_DRIVER_SQLSERVER = 1;
 
-    public static final int JDBC_DRIVER_MYSQL = 2;
-
-    public static final int JDBC_DRIVER_ACCESS = 3;
-
-    public static final int JDBC_DRIVER_ORACLE = 4;
 
 }
