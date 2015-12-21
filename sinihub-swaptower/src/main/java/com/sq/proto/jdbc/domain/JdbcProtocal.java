@@ -55,9 +55,6 @@ public class JdbcProtocal extends AbstractEntity<Long> {
     /** 数据查询sql  用来从目标数据库中查询相应数据 */
     private String selectSql;
 
-    /** 数据转化倍率 */
-    private String converRatio;
-
     @Override
     public Long getId() {
         return id;
@@ -138,13 +135,5 @@ public class JdbcProtocal extends AbstractEntity<Long> {
 
     public void setSelectSql(String selectSql) {
         this.selectSql = selectSql;
-    }
-
-    public String getConverRatio() {
-        return converRatio;
-    }
-
-    public void setConverRatio(String converRatio) {
-        this.converRatio = converRatio;
     }
 }

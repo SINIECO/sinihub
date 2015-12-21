@@ -33,34 +33,4 @@ public class LoadometerController{
     @Autowired
     private TradeDataService tradeDataService;
 
-    /**
-     * 同步指定时间段内的地磅数据
-     * @param betTwoDay 时间段 20151201-20151212
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping("loadometer/syncTradeData.do")
-    public String syncTradeData(@RequestParam String betTwoDay) {
-        if(StringUtils.isBlank(betTwoDay)) {
-           return null;
-        }
-
-        String[] betTwoDayArr = new String[2];
-        if (betTwoDay.contains("-")) {
-            betTwoDayArr = betTwoDay.split("-");
-        } else {
-            betTwoDayArr[0] = betTwoDay;
-            betTwoDayArr[1] = betTwoDay;
-        }
-
-        List<String> dayList = DateUtil.dayListBetweenDate(Integer.parseInt(betTwoDayArr[0]),Integer.parseInt(betTwoDayArr[1]));
-
-        for (String syncDay:dayList) {
-            System.out.println(syncDay);
-            tradeDataService.removeCurrDayTradeData(syncDay);
-            tradeDataService.insertCurrDayTradeData(syncDay);
-        }
-
-        return null;
-    }
 }

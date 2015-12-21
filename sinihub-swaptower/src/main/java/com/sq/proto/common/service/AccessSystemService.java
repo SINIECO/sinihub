@@ -1,7 +1,9 @@
 package com.sq.proto.common.service;
 
 import com.sq.inject.annotation.BaseComponent;
+import com.sq.loadometer.service.TradeDataService;
 import com.sq.proto.common.domain.AccessSystem;
+import com.sq.proto.common.domain.ProtocalConsts;
 import com.sq.proto.jdbc.domain.JdbcProtocal;
 import com.sq.proto.socket.domain.UdpProtocal;
 import com.sq.proto.common.repository.AccessSystemRepository;
@@ -9,11 +11,17 @@ import com.sq.proto.jdbc.repository.JdbcProtocalRepository;
 import com.sq.proto.opc.repository.OpcProtocalRepository;
 import com.sq.proto.socket.repository.UdpProtocalRepository;
 import com.sq.proto.opc.domain.OpcProtocal;
+import com.sq.quota.domain.QuotaTemp;
+import com.sq.quota.repository.QuotaTempRepository;
+import com.sq.quota.service.QuotaComputInsService;
 import com.sq.service.BaseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Calendar;
+import java.util.List;
 
 /**
  * 接入系统服务类
@@ -44,6 +52,15 @@ public class AccessSystemService extends BaseService<AccessSystem, Long> {
 
     @Autowired
     private JdbcProtocalRepository jdbcProtocalRepository;
+
+    @Autowired
+    private QuotaTempRepository quotaTempRepository;
+
+    @Autowired
+    private QuotaComputInsService quotaComputInsService;
+
+    @Autowired
+    private TradeDataService tradeDataService;
 
     /**
      * 获取子系统基本信息
@@ -79,5 +96,46 @@ public class AccessSystemService extends BaseService<AccessSystem, Long> {
      */
     public UdpProtocal fetchUdpProtocalConfig(String sysCode) {
         return udpProtocalRepository.findUdpProtocalBySysCode(sysCode);
+    }
+
+
+    /***
+     * 接口数据汇集
+     * @param computCal     计算时间
+     * @param sysCode       子系统编码
+     * @param protocalType  协议类型
+     */
+    public void interfaceDataGather(Calendar computCal, String sysCode, int protocalType) {
+        switch(protocalType) {
+            case ProtocalConsts.PROTOCAL_TYPE_JDBC:
+                tradeDataGather(computCal);
+                break;
+            default:
+                realTimeDataGather(computCal,sysCode);
+        }
+    }
+
+    /***
+     * 接口实时数据汇集
+     * @param computCal  计算时间
+     * @param sysCode    子系统编码
+     */
+    private void realTimeDataGather(Calendar computCal, String sysCode) {
+        List<QuotaTemp> quotaTempList = quotaTempRepository.listQuotaTempByMpsyscode(sysCode);
+
+        /** 实时数据小时数据汇集 */
+        quotaComputInsService.interfaceDataGather(computCal, quotaTempList);
+
+        /** 实时数据日数据汇集 */
+        quotaComputInsService.interfaceIndicatorDataGater(computCal, quotaTempList);
+    }
+
+    /***
+     * 同步地磅的实时数据
+     * @param computCal   计算时间
+     * @param sysCode     子系统编码
+     */
+    private void tradeDataGather(Calendar computCal) {
+        tradeDataService.generateLoadometerIndicator(computCal);
     }
 }

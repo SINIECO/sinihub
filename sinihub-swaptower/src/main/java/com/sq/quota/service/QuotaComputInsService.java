@@ -9,10 +9,8 @@ import com.sq.quota.component.DimensionComparator;
 import com.sq.quota.component.QuotaComputHelper;
 import com.sq.quota.domain.QuotaConsts;
 import com.sq.quota.domain.QuotaInstance;
-import com.sq.quota.domain.QuotaResetRecord;
 import com.sq.quota.domain.QuotaTemp;
 import com.sq.quota.repository.QuotaInstanceRepository;
-import com.sq.quota.repository.QuotaResetRecordRepository;
 import com.sq.quota.repository.QuotaTempRepository;
 import com.sq.quota.strategy.IQuotaComputStrategy;
 import com.sq.quota.strategy.InterfaceQuotaStrategy;
@@ -54,17 +52,8 @@ public class QuotaComputInsService extends BaseService<QuotaInstance,Long> {
     @Autowired
     private QuotaTempRepository quotaTempRepository;
 
-    @Autowired
-    private QuotaResetRecordRepository quotaResetRecordRepository;
-
-    /** 单个计算轮回中的超时时限 */
-    public static Long computWaitTimeOutValue = 10l;
-
     /** 指标模板缓存 */
     public static Map<String,QuotaTemp> quotaTempMapCache = new HashMap<String,QuotaTemp>();
-
-    /** 重置指标记录缓存 */
-    public static Map<String,QuotaResetRecord> quotaResetRecordMap = new HashMap<String,QuotaResetRecord>();
 
     /**
      * 初始化操作
@@ -72,7 +61,7 @@ public class QuotaComputInsService extends BaseService<QuotaInstance,Long> {
      *     2、更新指标模板的指标模板基础表达式
      */
     public void init() {
-        System.out.println("-------------------------------------");
+        log.debug("-------------------------------------");
         cacheQuotaTemp();
         updateQuotaExp();
     }
@@ -167,40 +156,10 @@ public class QuotaComputInsService extends BaseService<QuotaInstance,Long> {
     }
 
     /**
-     * 生成数学计算指标表达式
-     * @param exp 配置在模板上的表达式
-     * @return 生成的数学计算表达式
-     */
-    /*public String generateMathExpression (String exp, int fetchCycle){
-        if (exp == null) return null;
-
-        List<String> variableList = QuotaComputHelper.getVariableList(exp, QuotaComputHelper.getEvaluatorInstance());
-        for (String variable:variableList) {
-            //判断表达式中的编码是否存在，留到具体的计算处统一校验
-            QuotaTemp quotaTemp = quotaTempMapCache.get(variable);
-            if (null == quotaTemp ) {
-                return null;//关联指标不存在，直接退出
-            }
-            if (quotaTemp.getFetchCycle() == fetchCycle && quotaTemp.getDataSource() == QuotaConsts.DATASOURCE_CALCULATE) {
-                String replaceString = quotaTemp.getCalculateExpression();
-                String needReplaceString = EvaluationConstants.OPEN_VARIABLE + variable + EvaluationConstants.CLOSED_BRACE;
-                exp = exp.replace(needReplaceString,replaceString);
-            }
-        }
-
-        return exp;
-    }*/
-
-    /**
      * 接口数据汇集到系统的最小维度
      * @param computCal 计算时间
      */
-    public void interfaceDataGather (Calendar computCal) {
-        Searchable searchable = Searchable.newSearchable()
-                .addSearchFilter("dataSource", MatchType.EQ, QuotaConsts.DATASOURCE_INTERFACE);
-
-        List<QuotaTemp> quotaTempList = this.quotaTempRepository.findAll(searchable).getContent();
-
+    public void interfaceDataGather (Calendar computCal, List<QuotaTemp> quotaTempList) {
         for (QuotaTemp quotaTemp : quotaTempList) {
             log.debug(" QuotaTemp:->" + quotaTemp.getIndicatorName());
             sendCalculateCommForInter(quotaTemp, computCal, new InterfaceQuotaStrategy());
@@ -238,15 +197,28 @@ public class QuotaComputInsService extends BaseService<QuotaInstance,Long> {
      * 接口指标日数据汇集
      * @param computCal 计算日期
      */
-    public void interfaceIndicatorDataGater (Calendar computCal) {
+    public void interfaceIndicatorDataGater (Calendar computCal, List<QuotaTemp> assQuotaTempList) {
 
         LinkedBlockingQueue<QuotaTemp> waitComputQuotaQueue = new LinkedBlockingQueue<QuotaTemp>();
 
         Searchable searchable = Searchable.newSearchable()
                 .addSearchFilter("dataSource", MatchType.EQ, QuotaConsts.DATASOURCE_INTERFACE)
-                .addSearchFilter("calFrequency", MatchType.GTE, QuotaConsts.CAL_FREQUENCY_DAY);
+                .addSearchFilter("calFrequency", MatchType.EQ, QuotaConsts.CAL_FREQUENCY_DAY);
+
+
+        OrCondition orCondition = new OrCondition();
+        for (QuotaTemp assQuotaTemp:assQuotaTempList) {
+            orCondition.add(
+                    SearchFilterHelper.newCondition("calculateExpression",
+                            MatchType.LIKE, "%" + assQuotaTemp.getIndicatorCode() + "%"));
+        }
+        searchable.addSearchFilter(orCondition);
+
         List<QuotaTemp> quotaTempList = quotaTempRepository.findAll(searchable).getContent();
         Collections.sort(quotaTempList, new DimensionComparator());
+
+        //删除计算指标的关联指标
+        deleteNeedReComputIndicator(computCal, quotaTempList);
 
         for (QuotaTemp quotaTemp:quotaTempList) {
             waitComputQuotaQueue.add(quotaTemp);

@@ -1,7 +1,6 @@
-package com.sq.quartz.service;
+package com.sq.sys.quartz;
 
 import com.sq.loadometer.service.TradeDataService;
-import com.sq.protocol.opc.component.BaseConfiguration;
 import com.sq.protocol.opc.service.MesuringPointService;
 import com.sq.protocol.opc.service.OriginalDataService;
 import com.sq.protocol.opc.service.PushDataForYZTDService;
@@ -51,17 +50,6 @@ public class SchedulerExecuteService {
     private TradeDataService tradeDataService;
 
     /**
-     * opc实时数据同步任务
-     */
-    public void syncOpcItem () {
-        log.error("----------- Opc实时数据同步任务开始 -----------");
-        for (int cid=1;cid<= BaseConfiguration.CONFIG_CLIENT_MAX;cid++) {
-            mesuringPointService.fetchReadSyncItems(cid);
-        }
-        log.error("----------- Opc实时数据同步任务结束 -----------");
-    }
-
-    /**
      * 原始测点数据迁移任务
      */
     public void execDcsDataMigration () {
@@ -70,28 +58,6 @@ public class SchedulerExecuteService {
         curr.add(Calendar.DAY_OF_MONTH, -1);
         originalDataService.opcDataMigration(DateUtil.formatCalendar(curr));
         log.error("----------- Opc原始数据迁移任务结束 -----------");
-    }
-
-    /**
-     * 接口数据汇集任务
-     */
-    public void execInterfaceDataGather () {
-        log.error("----------- 接口小时数据汇集任务开始 -----------");
-        Calendar curr = Calendar.getInstance();
-        curr.add(Calendar.MINUTE,-30);
-        quotaComputInsService.interfaceDataGather(curr);
-        log.error("----------- 接口小时数据汇集任务结束 -----------");
-    }
-
-    /**
-     * 接口日数据汇集任务
-     */
-    public void execInterfaceIndicatorDataGater () {
-        log.error("----------- 接口日指标数据汇集任务开始 -----------");
-        Calendar curr = Calendar.getInstance();
-        curr.add(Calendar.DAY_OF_MONTH, -1);
-        quotaComputInsService.interfaceIndicatorDataGater(curr);
-        log.error("----------- 接口日指标数据汇集任务结束 -----------");
     }
 
     /**
@@ -110,17 +76,5 @@ public class SchedulerExecuteService {
         log.error("----------- （扬州泰达）大屏数据同步计算任务开始 -----------");
         pushDataForYZTDService.screenDataPush();
         log.error("----------- （扬州泰达）大屏数据同步计算任务结束 -----------");
-    }
-
-    /**
-     * 地磅原始数据汇集
-     */
-    public void execLoadometerOrignalDataGathering () {
-        log.error("----------- 地磅原始数据汇集任务开始 -----------");
-        Calendar syncCal = Calendar.getInstance();
-        syncCal.add(Calendar.HOUR_OF_DAY, -1);
-        String syncDate = DateUtil.formatCalendar(syncCal,DateUtil.DATE_FORMAT_DAFAULT);
-        tradeDataService.syncLoadometerTrade(syncDate);
-        log.error("----------- 地磅原始数据汇集任务结束 -----------");
     }
 }

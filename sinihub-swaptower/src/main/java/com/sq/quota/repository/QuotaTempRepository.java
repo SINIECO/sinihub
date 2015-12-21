@@ -3,6 +3,8 @@ package com.sq.quota.repository;
 import com.sq.quota.domain.QuotaTemp;
 import com.sq.repository.BaseRepository;
 
+import java.util.List;
+
 /**
  * 指标模板仓库.
  * User: shuiqing
@@ -17,5 +19,9 @@ import com.sq.repository.BaseRepository;
  */
 public interface QuotaTempRepository extends BaseRepository<QuotaTemp,Long> {
 
+    /** 根据编码查询指标模板 */
     QuotaTemp findByIndicatorCode(String indicatorCode);
+
+    /** 根据测点的系统编码查询，该子系统的直属指标模板 */
+    List<QuotaTemp> listQuotaTempByMpsyscode(String sysCode);
 }

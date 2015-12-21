@@ -1,6 +1,5 @@
 package com.sq.loadometer.repository;
 
-import com.sq.loadometer.domain.LoadometerConsts;
 import com.sq.loadometer.domain.LoadometerIndicatorDto;
 import com.sq.loadometer.domain.Trade;
 import com.sq.util.NativeQueryResultsMapper;
@@ -45,7 +44,6 @@ public class TradeDataRepositoryImpl {
                 .append("      t_trade T ")
                 .append("   ON MP.sourceCode = T.proCode  ")
                 .append("      AND DATE_FORMAT(T.secondWeightTime, '%Y%m%d') = ").append(queryDate)
-                .append("   WHERE MP.sysId =  ").append(LoadometerConsts.SYS_ODBC_LOADOMETER)
                 .append("    GROUP BY MP.sourceCode ");
         Query query = em.createNativeQuery(nativeSql.toString());
         return NativeQueryResultsMapper.map(query.getResultList(), LoadometerIndicatorDto.class);

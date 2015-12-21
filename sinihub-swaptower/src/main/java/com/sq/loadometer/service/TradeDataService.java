@@ -3,8 +3,6 @@ package com.sq.loadometer.service;
 import com.sq.entity.search.MatchType;
 import com.sq.entity.search.Searchable;
 import com.sq.inject.annotation.BaseComponent;
-import com.sq.loadometer.component.DblinkConnecter;
-import com.sq.loadometer.component.JdbcHelper;
 import com.sq.loadometer.domain.LoadometerIndicatorDto;
 import com.sq.loadometer.domain.Trade;
 import com.sq.loadometer.repository.TradeDataRepository;
@@ -22,10 +20,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -55,81 +52,18 @@ public class TradeDataService extends BaseService<Trade, Long> {
     @Autowired
     private QuotaInstanceRepository indicatorInstanceRepository;
 
-    /**
-     * 地磅流水数据同步
-     */
-    public void syncLoadometerTrade (String syncCal) {
-        removeCurrDayTradeData(syncCal);
-        insertCurrDayTradeData(syncCal);
-        generateLoadometerIndicator(syncCal);
-    }
-
-    /**
-     * 清除当日的已同步的流水数据
-     * @param removeTradeDay 删除日期
-     */
-    @Transactional(propagation = Propagation.REQUIRED)
-    public void removeCurrDayTradeData (String removeTradeDay) {
-        tradeDataRepository.deleteDataBySecondTime(removeTradeDay);
-    }
-
-    /**
-     * 填充当日的流水数据
-     * @param fillTradeData 填充日期
-     */
-    @Transactional(propagation = Propagation.REQUIRED)
-    public void insertCurrDayTradeData (String fillTradeData) {
-        List<Trade> tradeList = new ArrayList<Trade>();
-
-        StringBuilder insertTradeBuilder = new StringBuilder();
-        insertTradeBuilder
-                .append(" select ")
-                .append("       t.lsh AS lsh,  ")
-                .append("       t.ch AS carNo, ")
-                .append("       t.hm AS proCode, ")
-                .append("       t.dwdw AS sourceArea, ")
-                .append("       t.cmrs AS firstWeightTime, ")
-                .append("       t.cprs AS secondWeightTime, ")
-                .append("       t.mz AS gross, ")
-                .append("       t.pz AS tare, ")
-                .append("       t.jz AS net, ")
-                .append("       t.czy AS operator, ")
-                .append("       CONVERT (VARCHAR(12), t.cprs, 112) AS statDateNum ")
-                .append("    FROM   ")
-                .append("       czb t ")
-                .append("    WHERE   ")
-                .append("       CONVERT (VARCHAR(12), t.cprs, 112) =  ")
-                .append(fillTradeData);
-        try {
-            List<HashMap<String,String>> resultList = JdbcHelper.query(insertTradeBuilder.toString());
-            for (HashMap tradeMap:resultList) {
-                Trade trade = new Trade(tradeMap);
-                Double gross = Double.parseDouble(trade.getGross())/DblinkConnecter.load_ratio;
-                trade.setGross(gross.toString());
-
-                Double tare = Double.parseDouble(trade.getTare())/DblinkConnecter.load_ratio;
-                trade.setTare(tare.toString());
-
-                Double net = Double.parseDouble(trade.getNet())/DblinkConnecter.load_ratio;
-                trade.setNet(net.toString());
-                tradeList.add(trade);
-            }
-        } catch (SQLException e) {
-            log.error("执行query error：" + insertTradeBuilder.toString());
-        }
-        tradeDataRepository.save(tradeList);
-    }
-
-    /**
+    /***
      * 生成日地磅指标
-     * @param generateDate 生成日期
+     * @param computCal 生成日期
      */
     @Transactional(propagation = Propagation.REQUIRED)
-    public void generateLoadometerIndicator (String generateDate) {
+    public void generateLoadometerIndicator (Calendar computCal) {
         List<QuotaInstance> indicatorInstanceList = new ArrayList<QuotaInstance>();
 
+        String generateDate = DateUtil.formatCalendar(computCal,DateUtil.DATE_FORMAT_DAFAULT);
         //查询地磅指标数据
-        List<LoadometerIndicatorDto> loadometerIndicatorDtoList = tradeDataRepository.queryForLoadometerIndicator(generateDate);
+        List<LoadometerIndicatorDto> loadometerIndicatorDtoList = tradeDataRepository
+                .queryForLoadometerIndicator(generateDate);
         List<String> loadometerCodeList = new ArrayList<String>();
         for (LoadometerIndicatorDto loadometerIndicatorDto:loadometerIndicatorDtoList) {
             loadometerCodeList.add(loadometerIndicatorDto.getIndicatorCode());
@@ -151,7 +85,7 @@ public class TradeDataService extends BaseService<Trade, Long> {
                 indicatorInstance.setFloatValue(Double.parseDouble(loadometerIndicatorDto.getTotalAmount()));
                 indicatorInstance.setValueType(QuotaConsts.VALUE_TYPE_DOUBLE);
                 indicatorInstance.setStatDateNum(Integer.parseInt(generateDate));
-                indicatorInstance.setInstanceTime(DateUtil.stringToDate(generateDate,DateUtil.DATE_FORMAT_DAFAULT));
+                indicatorInstance.setInstanceTime(DateUtil.stringToDate(generateDate, DateUtil.DATE_FORMAT_DAFAULT));
             } catch (ParseException e) {
                 log.error("stringToCalendar error:", e);
             }
