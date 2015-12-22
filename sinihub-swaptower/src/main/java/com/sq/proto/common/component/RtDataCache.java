@@ -1,6 +1,5 @@
 package com.sq.proto.common.component;
 
-import com.sq.OriginalItem;
 import com.sq.proto.common.domain.MesuringPoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

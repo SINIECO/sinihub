@@ -2,11 +2,9 @@ package com.sq.proto.common.service;
 
 import com.sq.OriginalItem;
 import com.sq.inject.annotation.BaseComponent;
-import com.sq.proto.common.component.RtDataCache;
 import com.sq.proto.common.domain.AccessSystem;
-import com.sq.proto.common.domain.OriginalData;
-import com.sq.proto.common.domain.ProtocalConsts;
 import com.sq.proto.common.domain.MesuringPoint;
+import com.sq.proto.common.domain.ProtocalConsts;
 import com.sq.proto.common.repository.MesuringPointRepository;
 import com.sq.proto.common.repository.OriginalDataRepository;
 import com.sq.proto.jdbc.service.JdbcProtocalService;
@@ -18,9 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
