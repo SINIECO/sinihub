@@ -97,4 +97,9 @@ public class DblinkConnecter {
             freeConnection(conn);
         }
     }
+
+    public static void main(String[] args) {
+        DblinkConnecter.connSqlserver(2,"jdbc:mysql://183.207.173.194:12306/gov_rd_new?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf-8",
+                "root","123456");
+    }
 }

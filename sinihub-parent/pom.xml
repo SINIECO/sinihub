@@ -86,6 +86,7 @@
     <jeval.version>0.9.4</jeval.version>
 
     <mongodb.version>2.12.4</mongodb.version>
+    <mysql-connector.version>5.1.31</mysql-connector.version>
 
     <jsoup.version>1.7.3</jsoup.version>
     <jinterop.version>2.0.5</jinterop.version>
@@ -226,6 +227,14 @@
       <artifactId>jeval</artifactId>
       <version>${jeval.version}</version>
     </dependency>
+
+    <!-- mysql-connector start -->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>${mysql-connector.version}</version>
+    </dependency>
+    <!-- mysql-connector end -->
 
     <!-- data source 相关jar包-->
     <dependency>
