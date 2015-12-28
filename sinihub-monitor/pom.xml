@@ -81,11 +81,6 @@
             <artifactId>sinihub-protocal</artifactId>
             <version>${sinihub.protocal.version}</version>
         </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql.version}</version>
-        </dependency>
 
         <dependency>
             <groupId>com.yahoo.platform.yui</groupId>
@@ -105,6 +100,12 @@
             <version>3.9</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.5.4</version>
+        </dependency>
+
     </dependencies>
 
     <properties>
@@ -112,7 +113,6 @@
         <sinihub.protocal.version>1.0-SNAPSHOT</sinihub.protocal.version>
         <java.version>1.7</java.version>
         <jetty.version>8.1.8.v20121106</jetty.version>
-        <mysql.version>5.1.9</mysql.version>
         <yui.compressor.version>2.4.2</yui.compressor.version>
     </properties>
 
@@ -123,7 +123,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <db.name>snmis_jz20151215</db.name>
+                <db.name>ywj</db.name>
                 <connection.driver_class>com.mysql.jdbc.Driver</connection.driver_class>
                 <connection.admin.url>
                     <![CDATA[ jdbc:mysql://192.168.1.239:3306?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull ]]>

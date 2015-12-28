@@ -63,7 +63,7 @@
         <property name="dataSource" ref="dataSourceProxy"/>
         <property name="packagesToScan" value="com.sq.**.domain"/>
 
-        <property name="persistenceUnitName" value="${jpa.persistenceUnitName}"/>
+        <property    name="persistenceUnitName" value="${jpa.persistenceUnitName}"/>
         <property name="persistenceProvider">
             <bean class="org.hibernate.ejb.HibernatePersistence"/>
         </property>
@@ -171,4 +171,7 @@
                   value="com.sq.repository.RepositoryHelper.setEntityManagerFactory"/>
         <property name="arguments" ref="entityManagerFactory"/>
     </bean>
+
+    <import resource="springContext-schedule.xml"/>
+    <import resource="springContext-cxf.xml"/>
 </beans>
