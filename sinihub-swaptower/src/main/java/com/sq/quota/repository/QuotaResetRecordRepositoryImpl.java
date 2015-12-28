@@ -1,6 +1,5 @@
 package com.sq.quota.repository;
 
-import com.sq.protocol.opc.domain.OriginalData;
 import com.sq.quota.domain.QuotaResetRecord;
 
 import javax.persistence.EntityManager;

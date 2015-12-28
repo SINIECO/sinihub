@@ -3,17 +3,15 @@ package com.sq.quartz.service;
 import com.sq.inject.annotation.BaseComponent;
 import com.sq.quartz.component.QuartzJobFactory;
 import com.sq.quartz.component.QuartzJobFactoryDisallowConcurrentExecution;
-import com.sq.quartz.doamin.QuartzConsts;
-import com.sq.quartz.doamin.ScheduleJob;
+import com.sq.quartz.domain.QuartzConsts;
+import com.sq.quartz.domain.ScheduleJob;
 import com.sq.quartz.repository.ScheduleJobRepository;
 import com.sq.service.BaseService;
-import com.sq.util.SpringUtils;
 import org.quartz.*;
 import org.quartz.impl.matchers.GroupMatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -42,12 +40,13 @@ public class ScheduleJobService extends BaseService<ScheduleJob, Long> {
     @Autowired
     private ScheduleJobRepository scheduleJobRepository;
 
-    private SchedulerFactoryBean schedulerFactoryBean = SpringUtils.getBean(SchedulerFactoryBean.class);
+    @Autowired
+    private Scheduler scheduler;
 
     @PostConstruct
     public void init() throws Exception {
 
-        Scheduler scheduler = schedulerFactoryBean.getScheduler();
+        scheduler.start();
 
         // 这里获取任务信息数据
         List<ScheduleJob> jobList = scheduleJobRepository.findAll();
@@ -84,7 +83,6 @@ public class ScheduleJobService extends BaseService<ScheduleJob, Long> {
      * @throws SchedulerException
      */
     public List<ScheduleJob> getAllJob() throws SchedulerException {
-        Scheduler scheduler = schedulerFactoryBean.getScheduler();
         GroupMatcher<JobKey> matcher = GroupMatcher.anyJobGroup();
         Set<JobKey> jobKeys = scheduler.getJobKeys(matcher);
         List<ScheduleJob> jobList = new ArrayList<ScheduleJob>();
@@ -115,7 +113,6 @@ public class ScheduleJobService extends BaseService<ScheduleJob, Long> {
      * @throws SchedulerException
      */
     public List<ScheduleJob> getRunningJob() throws SchedulerException {
-        Scheduler scheduler = schedulerFactoryBean.getScheduler();
         List<JobExecutionContext> executingJobs = scheduler.getCurrentlyExecutingJobs();
         List<ScheduleJob> jobList = new ArrayList<ScheduleJob>(executingJobs.size());
         for (JobExecutionContext executingJob : executingJobs) {
@@ -145,11 +142,10 @@ public class ScheduleJobService extends BaseService<ScheduleJob, Long> {
      * @throws SchedulerException
      */
     public void addJob(ScheduleJob job) throws SchedulerException {
-        if (job == null || !QuartzConsts.STATUS_RUNNING.equals(job.getJobStatus())) {
+        if (job == null || QuartzConsts.STATUS_RUNNING.equals(job.getJobStatus())) {
             return;
         }
 
-        Scheduler scheduler = schedulerFactoryBean.getScheduler();
         log.debug(scheduler + ".......................................................................................add");
         TriggerKey triggerKey = TriggerKey.triggerKey(job.getJobName(), job.getGroupName());
 
@@ -168,6 +164,7 @@ public class ScheduleJobService extends BaseService<ScheduleJob, Long> {
             trigger = TriggerBuilder.newTrigger().withIdentity(job.getJobName(), job.getGroupName()).withSchedule(scheduleBuilder).build();
 
             scheduler.scheduleJob(jobDetail, trigger);
+            System.out.println(trigger.getNextFireTime());
         } else {
             // Trigger已存在，那么更新相应的定时设置
             CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(job.getCronExpression());
@@ -187,7 +184,6 @@ public class ScheduleJobService extends BaseService<ScheduleJob, Long> {
      * @throws SchedulerException
      */
     public void pauseJob(ScheduleJob scheduleJob) throws SchedulerException {
-        Scheduler scheduler = schedulerFactoryBean.getScheduler();
         JobKey jobKey = JobKey.jobKey(scheduleJob.getJobName(), scheduleJob.getGroupName());
         scheduler.pauseJob(jobKey);
     }
@@ -199,7 +195,6 @@ public class ScheduleJobService extends BaseService<ScheduleJob, Long> {
      * @throws SchedulerException
      */
     public void resumeJob(ScheduleJob scheduleJob) throws SchedulerException {
-        Scheduler scheduler = schedulerFactoryBean.getScheduler();
         JobKey jobKey = JobKey.jobKey(scheduleJob.getJobName(), scheduleJob.getGroupName());
         scheduler.resumeJob(jobKey);
     }
@@ -211,7 +206,6 @@ public class ScheduleJobService extends BaseService<ScheduleJob, Long> {
      * @throws SchedulerException
      */
     public void deleteJob(ScheduleJob scheduleJob) throws SchedulerException {
-        Scheduler scheduler = schedulerFactoryBean.getScheduler();
         JobKey jobKey = JobKey.jobKey(scheduleJob.getJobName(), scheduleJob.getGroupName());
         scheduler.deleteJob(jobKey);
 
@@ -224,7 +218,6 @@ public class ScheduleJobService extends BaseService<ScheduleJob, Long> {
      * @throws SchedulerException
      */
     public void runAJobNow(ScheduleJob scheduleJob) throws SchedulerException {
-        Scheduler scheduler = schedulerFactoryBean.getScheduler();
         JobKey jobKey = JobKey.jobKey(scheduleJob.getJobName(), scheduleJob.getGroupName());
         scheduler.triggerJob(jobKey);
     }
@@ -236,8 +229,6 @@ public class ScheduleJobService extends BaseService<ScheduleJob, Long> {
      * @throws SchedulerException
      */
     public void updateJobCron(ScheduleJob scheduleJob) throws SchedulerException {
-        Scheduler scheduler = schedulerFactoryBean.getScheduler();
-
         TriggerKey triggerKey = TriggerKey.triggerKey(scheduleJob.getJobName(), scheduleJob.getGroupName());
 
         CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);

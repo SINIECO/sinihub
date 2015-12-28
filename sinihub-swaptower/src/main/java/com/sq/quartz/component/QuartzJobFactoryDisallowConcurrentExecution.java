@@ -1,6 +1,6 @@
 package com.sq.quartz.component;
 
-import com.sq.quartz.doamin.ScheduleJob;
+import com.sq.quartz.domain.ScheduleJob;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;

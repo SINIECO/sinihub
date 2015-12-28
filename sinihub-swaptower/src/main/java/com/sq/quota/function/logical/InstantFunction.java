@@ -1,9 +1,7 @@
 package com.sq.quota.function.logical;
 
-import com.sq.protocol.opc.domain.OriginalData;
-import com.sq.protocol.opc.repository.MesuringPointRepository;
-import com.sq.protocol.opc.repository.OriginalDataRepository;
-import com.sq.quota.repository.QuotaInstanceRepository;
+import com.sq.protocal.common.domain.OriginalData;
+import com.sq.protocal.common.repository.OriginalDataRepository;
 import com.sq.util.DateUtil;
 import com.sq.util.SpringUtils;
 import net.sourceforge.jeval.EvaluationConstants;

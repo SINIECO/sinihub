@@ -2,12 +2,11 @@ package com.sq.quota.strategy;
 
 import com.sq.entity.search.MatchType;
 import com.sq.entity.search.Searchable;
-import com.sq.protocol.opc.domain.MesuringPoint;
-import com.sq.protocol.opc.domain.OriginalData;
-import com.sq.protocol.opc.repository.MesuringPointRepository;
-import com.sq.protocol.opc.repository.OriginalDataRepository;
+import com.sq.protocal.common.domain.MesuringPoint;
+import com.sq.protocal.common.domain.OriginalData;
+import com.sq.protocal.common.repository.MesuringPointRepository;
+import com.sq.protocal.common.repository.OriginalDataRepository;
 import com.sq.quota.component.QuotaComputHelper;
-import com.sq.quota.domain.QuotaConsts;
 import com.sq.quota.domain.QuotaTemp;
 import com.sq.quota.function.logical.LogicalFunctions;
 import com.sq.util.DateUtil;
@@ -16,7 +15,6 @@ import net.sourceforge.jeval.EvaluationConstants;
 import net.sourceforge.jeval.EvaluationException;
 import net.sourceforge.jeval.Evaluator;
 import net.sourceforge.jeval.function.Function;
-import net.sourceforge.jeval.function.FunctionResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

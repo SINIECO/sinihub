@@ -172,9 +172,6 @@
         <property name="arguments" ref="entityManagerFactory"/>
     </bean>
 
-    <bean id="schedulerFactoryBean"
-          class="org.springframework.scheduling.quartz.SchedulerFactoryBean" />
-
     <import resource="springContext-config-monitor.xml"/>
     <import resource="springContext-schedule.xml"/>
     <import resource="springContext-cxf.xml"/>

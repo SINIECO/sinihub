@@ -1,6 +1,6 @@
 package com.sq.quartz.repository;
 
-import com.sq.quartz.doamin.ScheduleJob;
+import com.sq.quartz.domain.ScheduleJob;
 import com.sq.repository.BaseRepository;
 
 /**

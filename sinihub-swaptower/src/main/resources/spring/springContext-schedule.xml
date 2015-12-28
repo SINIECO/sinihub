@@ -5,73 +5,14 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 					    http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
 
-    <bean name="startQuertz" lazy-init="false" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+    <bean name="scheduler" lazy-init="false" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
             <list>
-                <!--<ref bean="dcsDataMigrationJobTrigger" />
-                <ref bean="yztdDataJobTrigger" />
-                <ref bean="njmbDataJobTrigger" />
-                -->
+
             </list>
         </property>
     </bean>
 
-    <bean id="schedulerExecuteService" class="com.sq.sys.quartz.SchedulerExecuteService" />
+    <bean id="schedulerExecuteService" class="com.sq.sys.quartz.SchedulerExecutor" />
 
-    <!-- 南京光大大屏烟气指标数据定时读取 -->
-    <bean id="njmbDataDetailJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-        <!-- 调用的类 -->
-        <property name="targetObject" ref="schedulerExecuteService"/>
-        <!-- 调用类中的方法 -->
-        <property name="targetMethod" value="executeNjmbDataSync" />
-        <!-- 是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
-        <property name="concurrent" value="false"/>
-    </bean>
-
-    <bean id="njmbDataJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-        <property name="jobDetail">
-            <ref bean="njmbDataDetailJob"/>
-        </property>
-        <property name="cronExpression">
-            <value>*/5 * * * * ?</value>
-        </property>
-    </bean>
-
-    <!-- 扬州泰达大屏烟气指标数据定时读取 -->
-    <bean id="yztdDataDetailJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-        <!-- 调用的类 -->
-        <property name="targetObject" ref="schedulerExecuteService"/>
-        <!-- 调用类中的方法 -->
-        <property name="targetMethod" value="executeYztdDataSync" />
-        <!-- 是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
-        <property name="concurrent" value="false"/>
-    </bean>
-
-    <bean id="yztdDataJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-        <property name="jobDetail">
-            <ref bean="yztdDataDetailJob"/>
-        </property>
-        <property name="cronExpression">
-            <value>0 */1 * * * ?</value>
-        </property>
-    </bean>
-
-    <!-- DCS数据迁移并清理 -->
-    <bean id="dcsDataMigrationDetailJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-        <!-- 调用的类 -->
-        <property name="targetObject" ref="schedulerExecuteService"/>
-        <!-- 调用类中的方法 -->
-        <property name="targetMethod" value="execDcsDataMigration" />
-        <!-- 是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
-        <property name="concurrent" value="false"/>
-    </bean>
-
-    <bean id="dcsDataMigrationJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-        <property name="jobDetail">
-            <ref bean="dcsDataMigrationDetailJob"/>
-        </property>
-        <property name="cronExpression">
-            <value>0 35 0 * * ?</value>
-        </property>
-    </bean>
 </beans>

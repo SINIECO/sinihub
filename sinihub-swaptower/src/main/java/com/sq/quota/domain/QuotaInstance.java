@@ -19,7 +19,7 @@ import java.util.Date;
  * | o| (_
  */
 @Entity
-@Table(name="t_IndicatorInstanceCurrent")
+@Table(name="t_IndicatorInstance")
 public class QuotaInstance extends QuotaBase {
 
     private static final long serialVersionUID = -6188768929459925207L;

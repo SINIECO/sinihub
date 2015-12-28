@@ -1,6 +1,6 @@
 package com.sq.quartz.component;
 
-import com.sq.quartz.doamin.ScheduleJob;
+import com.sq.quartz.domain.ScheduleJob;
 import com.sq.util.SpringUtils;
 import com.sq.util.StringUtils;
 import org.slf4j.Logger;
