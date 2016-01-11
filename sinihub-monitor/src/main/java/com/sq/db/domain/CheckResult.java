@@ -33,7 +33,7 @@ public class CheckResult extends AbstractEntity<Long>{
     }
 
     public void setId(Long id) {
-        Id = id;
+        this.Id = id;
     }
 
     public void setSyncStatus(Integer syncStatus) {

@@ -11,7 +11,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "t_projectpoint")
 public class ProjectPoint extends AbstractEntity<Long>{
-
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
@@ -28,14 +27,12 @@ public class ProjectPoint extends AbstractEntity<Long>{
     //测点位置描述
     private String pointName;
 
-    @Override
-    public Long getId() {
-        return id;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    @Override
-    public void setId(Long id) {
-        id = id;
+    public Long getId() {
+        return id;
     }
 
     public String getHospId() {

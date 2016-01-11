@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "t_ctrlemail")
 public class EmailStatus extends AbstractEntity<Long> {
-    @javax.persistence.Id
+    @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long Id;
     private Long checkItemId;
@@ -20,9 +20,8 @@ public class EmailStatus extends AbstractEntity<Long> {
         return Id;
     }
 
-
     public void setId(Long id) {
-        Id = id;
+        this.Id = id;
     }
 
     public Integer getStatus() {

@@ -27,6 +27,15 @@ public class EmailItem extends AbstractEntity<Long> {
     //发送状态
     private String sendStatus;
 
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public void setReceiver(String receiver) {
         this.receiver = receiver;
     }
@@ -67,13 +76,4 @@ public class EmailItem extends AbstractEntity<Long> {
         return sendTime;
     }
 
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
 }

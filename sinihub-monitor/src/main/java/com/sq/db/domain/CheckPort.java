@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "t_checkport")
 public class CheckPort extends AbstractEntity<Long> {
-    @javax.persistence.Id
+    @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long Id;
     @ManyToOne(cascade= CascadeType.REFRESH, fetch= FetchType.LAZY)
@@ -21,19 +21,19 @@ public class CheckPort extends AbstractEntity<Long> {
     @org.hibernate.annotations.ForeignKey(name="fk_portid")
     @NotFound(action= NotFoundAction.IGNORE)
     private ProjectPoint projectPoint;
+
     private Integer port;
-    @Override
-    public Long getId() {
-        return Id;
-    }
-
-    @Override
-    public void setId(Long aLong) {
-
-    }
 
     public ProjectPoint getProjectPoint() {
         return projectPoint;
+    }
+
+    public void setId(Long id) {
+        this.Id = id;
+    }
+
+    public Long getId() {
+        return Id;
     }
 
     public void setProjectPoint(ProjectPoint projectPoint) {

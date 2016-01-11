@@ -5,7 +5,6 @@ import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
-
 /**
  * Created by ywj on 2015/12/18.
  */
@@ -20,10 +19,20 @@ public class CheckItem extends AbstractEntity<Long> {
     @org.hibernate.annotations.ForeignKey(name="fk_itid")
     @NotFound(action= NotFoundAction.IGNORE)
     private ProjectPoint projectPoint;
+
     private Integer sysId;
+
     private String sysName;
 
     public CheckItem() {
+    }
+
+    public Long getId() {
+        return Id;
+    }
+
+    public void setId(Long id) {
+        this.Id = id;
     }
 
     public String getSysName() {
@@ -48,14 +57,6 @@ public class CheckItem extends AbstractEntity<Long> {
 
     public ProjectPoint getProjectPoint() {
         return projectPoint;
-    }
-
-    public Long getId() {
-        return Id;
-    }
-
-    public void setId(Long id) {
-        Id = id;
     }
 
     @Override

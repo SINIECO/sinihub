@@ -32,10 +32,8 @@ public interface Constant {
      //代表网络异常抛出的异常类型3
      public final static int PROBLEM_TYPE03 = 3;
 
-
      //代表端口异常抛出的异常类型5
      public final static int PROBLEM_TYPE05 = 5;
-
 
      //代表网络异常抛出的异常类型5描述
      public final static String PROBLEM_TYPE05_DIS = "端口异常";
