@@ -27,7 +27,6 @@ public class DBUtil
         //获得与数据库的链接
         //jdbc:mysql://服务器IP:端口号/数据库名"
         String url = "jdbc:mysql://"+uri+"?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf-8";
-        System.out.println(url);
         conn = DriverManager.getConnection(url,userName,passWord);
         return conn;
     }

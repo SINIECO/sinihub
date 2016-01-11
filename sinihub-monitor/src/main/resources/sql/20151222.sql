@@ -29,8 +29,8 @@ CREATE TABLE `t_checkitem` (
   CONSTRAINT `fk_itid` FOREIGN KEY (`projectpointId`) REFERENCES `t_projectpoint` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
-INSERT INTO t_checkitem(projectpointId,sysId,sysname) VALUES(8,1,'DCS');
-INSERT INTO t_checkitem(projectpointId,sysId,sysname) VALUES(8,3,'ECS');
+INSERT INTO t_checkitem(projectpointId,sysId,sysname) VALUES(9,1,'DCS');
+INSERT INTO t_checkitem(projectpointId,sysId,sysname) VALUES(9,3,'ECS');
 INSERT INTO t_checkitem(projectpointId,sysId,sysname) VALUES(8,1,'DCS');
 INSERT INTO t_checkitem(projectpointId,sysId,sysname) VALUES(8,4,'汽机');
 INSERT INTO t_checkitem(projectpointId,sysId,sysname) VALUES(10,1,'DCS');
@@ -56,3 +56,12 @@ CREATE TABLE `t_emailreceiverecord` (
   `sendstatus` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+--邮箱控制表
+CREATE TABLE `t_ctrlemail` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `checkpointId` bigint(20) DEFAULT NULL,
+  `status` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`));
+
+  INSERT INTO t_ctrlemail(checkitemId,status) VALUES(55,0);

@@ -9,6 +9,9 @@
         <property name="triggers">
             <list>
                 <ref bean="checkAllProjectJobTrigger" />
+                <ref bean="checkAllNetJobTrigger" />
+                <ref bean="checkAllTradeJobTrigger" />
+                <ref bean="checkAllPortJobTrigger" />
             </list>
         </property>
     </bean>
@@ -30,7 +33,64 @@
             <ref bean="checkAllProjectDetailJob"/>
         </property>
         <property name="cronExpression">
-            <value>0 */1 * * * ?</value>
+            <value>0 */30 * * * ?</value>
+        </property>
+    </bean>
+
+    <!-- 定时检查各项目点网络连通状态 -->
+    <bean id="checkAllNetDetailJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject" ref="schedulerExecuteService"/>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod" value="checkAllItemNet" />
+        <!-- 是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
+        <property name="concurrent" value="false"/>
+    </bean>
+
+    <bean id="checkAllNetJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail">
+            <ref bean="checkAllNetDetailJob"/>
+        </property>
+        <property name="cronExpression">
+            <value>0 */20 * * * ?</value>
+        </property>
+    </bean>
+
+    <!-- 定时检查各项目地磅数据更新状态 -->
+    <bean id="checkAllTradeDetailJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject" ref="schedulerExecuteService"/>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod" value="checkAllTrade" />
+        <!-- 是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
+        <property name="concurrent" value="false"/>
+    </bean>
+
+    <bean id="checkAllTradeJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail">
+            <ref bean="checkAllTradeDetailJob"/>
+        </property>
+        <property name="cronExpression">
+            <value>0 0 */12 * * ?</value>
+        </property>
+    </bean>
+
+    <!-- 定时检查各项目点网络连通状态 -->
+    <bean id="checkAllPortJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject" ref="schedulerExecuteService"/>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod" value="checkAllPortReady" />
+        <!-- 是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
+        <property name="concurrent" value="false"/>
+    </bean>
+
+    <bean id="checkAllPortJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail">
+            <ref bean="checkAllPortJob"/>
+        </property>
+        <property name="cronExpression">
+            <value>0 */20 * * * ?</value>
         </property>
     </bean>
 

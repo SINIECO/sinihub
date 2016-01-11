@@ -128,6 +128,17 @@ public class DateUtil {
     }
 
     /**
+     * 格式化Calendar,返回默认的日期格式字符串
+     * 本方法不指定format，采用默认的format，DateUtil.DATE_FORMAT_DAFAULT；如果需要制定format，
+     * 请调用formatCalendar(Calendar calendar,String fomart)
+     * @param calendar 需要格式化的日历对象
+     * @return
+     */
+    public static String formatCalendarbyYwj(Calendar calendar) {
+        return formatCalendar(calendar, DATE_FORMAT_YMDHMS);
+    }
+
+    /**
      * 格式化Calendar,返回指定的日期格式字符串
      * @param calendar 需要格式化的日历对象
      * @param fomart 格式化日历格式

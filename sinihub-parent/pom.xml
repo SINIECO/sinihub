@@ -86,7 +86,7 @@
     <jeval.version>0.9.4</jeval.version>
 
     <mongodb.version>2.12.4</mongodb.version>
-    <mysql-connector.version>5.1.31</mysql-connector.version>
+    <mysql-connector.version>5.1.38</mysql-connector.version>
 
     <jsoup.version>1.7.3</jsoup.version>
     <jinterop.version>2.0.5</jinterop.version>

@@ -25,7 +25,7 @@ public class ProjectPoint extends AbstractEntity<Long>{
     private String userName;
     //用户密码
     private String passWord;
-    //测点描述
+    //测点位置描述
     private String pointName;
 
     @Override
