@@ -15,13 +15,15 @@ public interface Constant {
      public final static String CHECK_TRADE_EXCEPTION = "checkAllCheckItemTrade->检查项目点的地磅状态出错";
 
      //检测时间常量为20分钟
-     public final static int CHECK_TIME = 20;
+     public final static int CHECK_TIME = 1200;
 
      //代表未超过20分钟类型1
      public final static int PROBLEM_TYPE01 = 1;
 
      //代表未超过20分钟类型1描述
      public final static String PROBLEM_TYPE01_DIS = "监测正常";
+     //代表未超过20分钟类型1描述
+     public final static int PROBLEM_TYPE10= 10;
 
      //代表超过20分钟抛出的异常类型2
      public final static int PROBLEM_TYPE02 = 2;
@@ -101,4 +103,11 @@ public interface Constant {
      //"失败次数为->"
      public final static String FAIL_TIME = "失败次数为->";
 
+     public final static int SECONDS = 1000;
+
+     //代表扬州的地磅Id
+     public final static int YANG_ZHOU_DI_BANG = 8;
+
+     //代表地磅监测时间12小时
+     public final static int TWELF = 12;
 }

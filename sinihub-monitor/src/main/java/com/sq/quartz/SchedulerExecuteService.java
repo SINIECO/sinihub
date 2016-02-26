@@ -67,7 +67,7 @@ public class SchedulerExecuteService {
     public void checkAllTrade(){
         log.error("------------检查所有项目的地磅数据更新状态开始------------");
          checkTradeItemService.checkAllProjectPointTrade();
-        log.error("------------检查所有项目的地磅数据更新状态开始------------");
+        log.error("------------检查所有项目的地磅数据更新状态结束------------");
     }
 
     /**

@@ -18,11 +18,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
 import java.text.ParseException;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by ywj on 2015/12/21.
@@ -104,19 +103,23 @@ public class OriginalDateService {
                         //获取数据库最近数据的时间
                         time = rs.getDate("instanceTime") + " " + rs.getTime("instanceTime").toString();
                     }
-                    DBUtil.close(rs, stmt, conn);
                     //计算时间差值
-                    long minutes = DateUtil.getMinutesBetTwoCal(
-                            DateUtil.stringToCalendar(time, DateUtil.DATE_FORMAT_YMDHMS),
-                            Calendar.getInstance());
+                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Date d1 = df.parse(df.format(new Date()));
+                    Date d2 = df.parse(time);
+                    long diff = d1.getTime() - d2.getTime();
+                    long days = diff / (1000);
+                    log.error("-----时间差为-----");
+                    log.error(String.valueOf(days));
                     //查出对应数据库中邮箱的开关状态
                     List<EmailStatus> emailStatusList = emailStatusRepository.findAll();
                     for(EmailStatus e:emailStatusList){
                         if(checkItem.getId().intValue() == e.getCheckItemId().intValue()){
-                            emailStatusService.delete(e.getId());
-                            e.setCheckItemId(checkItem.getId());
+                            System.out.println(e.getStatus());
+                            //emailStatusService.delete(e.getId());
+                            //e.setCheckItemId(checkItem.getId());
                             //判断时间是否在正常范围内
-                            if (minutes > Constant.CHECK_TIME) {
+                            if (days > Constant.CHECK_TIME) {
                                 //出现异常传入有异常的数据生成记录
                                 checkResultService.receiveDataAndSave(checkItem, time);
                                 //发送完邮件，将对应的邮箱状态改为1代表不接受邮件，防止重复发送邮件
@@ -142,7 +145,7 @@ public class OriginalDateService {
                     failTime = (failTime + Constant.SYNCS_TATUS01);
                     failMap.put(checkItem.getProjectPoint().getId(), failTime);
                     if (failTime >= Constant.SECOND_TIME_FIVE) {
-                        checkResultService.sendAndSaveEmail("本地连接失败！", "非项目点的因素！",exceptionFlag);
+                        //checkResultService.sendAndSaveEmail("本地连接失败！", "非项目点的因素！",exceptionFlag);
                         //改变其他异常的邮箱状态1，防止重复发送
                         exceptionFlagMap.put(checkItem.getId(),Constant.SYNCS_TATUS01);
                         //超过5次则清除重新计数

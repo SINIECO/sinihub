@@ -87,7 +87,7 @@ public class CheckResultService extends BaseService<CheckResult,Long> {
                         + Constant.SLASH + checkItem.getProjectPoint().getHospId()
                         + Constant.SLASH + Constant.PROBLEM_TYPE03_DIS
                         + Constant.SLASH + time;
-                text = subject;
+                text = "如若是南京光大的网络，是由于连接数据库产生，其他项目点网络异常可以去看看";
                 break;
             case Constant.PROBLEM_TYPE04:
                 subject = checkItem.getProjectPoint().getPointName()

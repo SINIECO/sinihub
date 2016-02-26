@@ -88,9 +88,9 @@ public class CheckNetService {
                 //查出对应数据库中邮箱的开关状态
                 List<EmailStatus> emailStatusList = emailStatusRepository.findAll();
                 for(EmailStatus e:emailStatusList) {
-                    if (checkItem.getId().intValue() == e.getCheckItemId().intValue()) {
+                    if (checkItem.getProjectPoint().getId().intValue() == e.getCheckItemId().intValue()) {
                         emailStatusService.delete(e.getId());
-                        e.setCheckItemId(checkItem.getId());
+                        e.setCheckItemId(checkItem.getProjectPoint().getId());
                         //可以发送邮箱
                         e.setStatus(Constant.EMAIL_STATUS_ONE);
                         emailStatusRepository.save(e);
@@ -105,7 +105,7 @@ public class CheckNetService {
                 countCon = (countCon+1);
                 log.error(checkItem.getProjectPoint().getId().toString()+"失败次数为->"+countCon.toString());
                 //产生错误则将结果保存到数据库中
-                netResultService.receiveDataAndSave(checkItem,countCon);
+                //netResultService.receiveDataAndSave(checkItem,countCon);
                 //超过10次则清除
                 if(countCon >= Constant.SECOND_TIME_TEN){
                     countCon = Constant.SECOND_TIME_OZEO;

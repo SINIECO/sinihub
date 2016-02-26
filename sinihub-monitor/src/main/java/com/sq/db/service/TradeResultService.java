@@ -28,9 +28,10 @@ public class TradeResultService {
 
     /**
      * 存储地磅异常情况信息到数据库
+     *
      * @param projectPoint
      */
-    public void receiveDataAndSave(ProjectPoint projectPoint){
+    public void receiveDataAndSave(ProjectPoint projectPoint,String time) {
         //实例化CheckResult对象接收数据用于存到mysql数据库中
         CheckResult checkResult = new CheckResult();
         checkResult.setCheckItemId(projectPoint.getId());
@@ -39,10 +40,25 @@ public class TradeResultService {
         checkResult.setCheckTime(Calendar.getInstance());
         checkResultRepository.save(checkResult);
         //传递数据发送邮件
-        String dateStr= DateUtil.formatCalendar(Calendar.getInstance());
+        String dateStr = DateUtil.formatCalendar(Calendar.getInstance());
         String subject = projectPoint.getPointName()
                 + Constant.SLASH + Constant.PROBLEM_TYPE04_DIS
-                + Constant.SLASH + dateStr;
-        checkResultService.sendAndSaveEmail(subject,subject,Constant.EMAIL_STATUS_ONE);
+                + Constant.SLASH + time;
+        checkResultService.sendAndSaveEmail(subject, subject, Constant.EMAIL_STATUS_ONE);
+    }
+
+    /**
+     * 存入地磅正常信息
+     *
+     * @param projectPoint
+     */
+    public void receiveDataAndSaveWell(ProjectPoint projectPoint) {
+        //实例化CheckResult对象接收数据用于存到mysql数据库中
+        CheckResult checkResult = new CheckResult();
+        checkResult.setCheckItemId(projectPoint.getId());
+        checkResult.setProblemType(Constant.PROBLEM_TYPE10);
+        checkResult.setSyncStatus(Constant.SYNCS_TATUS01);
+        checkResult.setCheckTime(Calendar.getInstance());
+        checkResultRepository.save(checkResult);
     }
 }

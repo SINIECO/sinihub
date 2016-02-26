@@ -52,9 +52,9 @@ public class NetResultService {
             //查出对应数据库中邮箱的开关状态
             List<EmailStatus> emailStatusList = emailStatusRepository.findAll();
             for(EmailStatus e:emailStatusList) {
-                if (checkItem.getId().intValue() == e.getCheckItemId().intValue()) {
+                if (checkItem.getProjectPoint().getId().intValue() == e.getCheckItemId().intValue()) {
                     emailStatusService.delete(e.getId());
-                    e.setCheckItemId(checkItem.getId());
+                    e.setCheckItemId(checkItem.getProjectPoint().getId());
                     //可以发送邮箱
                     e.setStatus(Constant.EMAIL_STATUS_TWO);
                     emailStatusRepository.save(e);

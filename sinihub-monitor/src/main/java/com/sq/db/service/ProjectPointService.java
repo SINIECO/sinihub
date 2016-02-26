@@ -51,6 +51,27 @@ public class ProjectPointService extends BaseService<ProjectPoint,Long> {
             conn = DBUtil.getConn(str.toString(),pp.getUserName(),pp.getPassWord());
             return conn;
     }
+
+    /**
+     * 外键关联t_projectPoint表取出数据
+     * 建立新的远程数据库连接
+     * @param projectPointId
+     * @return
+     * @throws Exception
+     */
+    public Connection instanceConnectionForTrade(Long projectPointId) throws Exception{
+        //获取主键为projectPointId的数据建立连接
+        Searchable searchable = Searchable.newSearchable()
+                .addSearchFilter("id", MatchType.EQ, projectPointId);
+        ProjectPoint pp = projectPointRepository.findOne(projectPointId.longValue());
+        Connection con = null;
+        //构造url
+        StringBuffer str = new StringBuffer();
+        str.append(pp.getHospId()).append(":").append(pp.getPort()).append("/").append(pp.getDbName());
+        //建立连接
+        con = DBUtil.getConn(str.toString(),pp.getUserName(),pp.getPassWord());
+        return con;
+    }
 }
 
 
