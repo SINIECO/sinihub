@@ -4,6 +4,7 @@
         <artifactId>sinihub-parent</artifactId>
         <groupId>com.sq</groupId>
         <version>1.0-SNAPSHOT</version>
+        <relativePath>../sinihub-parent/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -11,7 +12,7 @@
     <packaging>jar</packaging>
 
     <name>sinihub-helianthus</name>
-    <url>http://maven.apache.org</url>
+    <url>https://github.com/shuiqing301/sinihub/helianthus</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
