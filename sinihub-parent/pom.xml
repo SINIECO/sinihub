@@ -96,6 +96,9 @@
     <jna.version>4.1</jna.version>
 
     <ojdbc.version>4.0</ojdbc.version>
+
+    <poi.version> 3.9</poi.version>
+
   </properties>
 
   <dependencies>
@@ -124,7 +127,11 @@
       <version>${h2.version}</version>
       <scope>test</scope>
     </dependency>
-
+    <dependency>
+      <groupId>org.apache.poi</groupId>
+      <artifactId>poi</artifactId>
+      <version>${poi.version}</version>
+    </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-server</artifactId>
